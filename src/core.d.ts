@@ -15,7 +15,7 @@ interface CoreInstance {
     publicInstance?: Component;
     childInstance?: CoreInstance;
 }
-declare class Component {
+export declare class Component {
     props: Props;
     state: any;
     __internalInstance: CoreInstance;

@@ -24,7 +24,7 @@ function updateInstance(internalInstance: CoreInstance) {
   reconcile(parentDom as HTMLElement, internalInstance, element);
 }
 
-class Component {
+export class Component {
   props: Props;
   state: any;
   __internalInstance: CoreInstance;
