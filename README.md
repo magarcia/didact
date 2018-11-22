@@ -7,7 +7,7 @@ This is my own React implementation base on the series [Didact: a DIY guide to b
 - [x] Stateful Components
 - [x] Stateless Components
 - [ ] `renderToString`
-- [ ] Incremental reconciliation (a.k.a. Fiber)
+- [x] Incremental reconciliation (a.k.a. Fiber)
 - [ ] `renderToStream`
 - [ ] `hydrate`
 - [ ] Server Side Rendering (SSR)

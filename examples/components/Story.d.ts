@@ -1,4 +1,4 @@
-import { Component } from "../../src/core";
+import { Component } from "../../src/js-framework";
 export declare class Story extends Component {
     state: any;
     constructor(props: any);

@@ -1,6 +1,6 @@
 /** @jsx Framework.createElement */
 
-import Framework from "../src/core";
+import Framework from "../src/js-framework";
 import { App } from "./components/App";
 
 const rootDom = document.getElementById("root");

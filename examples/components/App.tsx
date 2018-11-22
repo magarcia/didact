@@ -1,6 +1,6 @@
 /** @jsx Framework.createElement */
 
-import Framework, { Component } from "../../src/core";
+import Framework, { Component } from "../../src/js-framework";
 import { Story } from "./Story";
 
 export class App extends Component {
