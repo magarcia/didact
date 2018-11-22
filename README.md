@@ -13,4 +13,6 @@ This is my own React implementation base on the series [Didact: a DIY guide to b
 - [ ] Server Side Rendering (SSR)
 - [ ] Lifecycle methods
 - [ ] Hooks
+- [ ] Router
+- [ ] Redux
 - [ ] Tests
