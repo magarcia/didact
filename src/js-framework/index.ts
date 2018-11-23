@@ -4,5 +4,6 @@ export { Component } from "./Component";
 
 export default {
   render,
-  createElement
+  createElement,
+  renderToString: console.log
 };
