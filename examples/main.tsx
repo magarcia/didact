@@ -3,7 +3,7 @@
 import Framework from "../src/js-framework";
 import { App } from "./components/App";
 
-const rootDom = document.getElementById("root");
+const rootDom = document.getElementsByClassName("todoapp")[0];
 
 const stories = [
   { name: "Didact introduction", url: "http://bit.ly/2pX7HNn" },
