@@ -22,5 +22,10 @@ module.exports = {
     filename: "[name].js",
     path: path.resolve(__dirname, "dist")
   },
-  plugins: [new CopyWebpackPlugin([{ from: "examples/*.html", flatten: true }])]
+  plugins: [
+    new CopyWebpackPlugin([
+      { from: "examples/*.html", flatten: true },
+      { from: "examples/*.css", flatten: true }
+    ])
+  ]
 };
