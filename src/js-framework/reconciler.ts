@@ -21,8 +21,15 @@ declare global {
   }
 }
 
+interface UpdateUnit {
+  from: FiberTags.HOST_ROOT | FiberTags.CLASS_COMPONENT;
+  dom?: HTMLElement;
+  newProps?: any;
+  instance?: Component;
+  partialState?: any;
+}
 // Global state
-const updateQueue = [];
+const updateQueue: UpdateUnit[] = [];
 let nextUnitOfWork = null;
 let pendingCommit = null;
 
@@ -78,9 +85,10 @@ function resetNextUnitOfWork() {
 
   const root =
     update.from == FiberTags.HOST_ROOT
-      ? update.dom._rootContainerFiber
+      ? (update.dom as any)._rootContainerFiber
       : getRoot(update.instance.__fiber);
 
+  if (root) delete root.alternate;
   nextUnitOfWork = {
     tag: FiberTags.HOST_ROOT,
     stateNode: update.dom || root.stateNode,
@@ -98,6 +106,8 @@ function getRoot(fiber: Fiber) {
 }
 
 function performUnitOfWork(wipFiber: Fiber) {
+  // if (wipFiber && wipFiber.tag == FiberTags.HOST_ROOT)
+  //   console.log("performUnitOfWork", wipFiber);
   beginWork(wipFiber);
   if (wipFiber.child) {
     return wipFiber.child;
@@ -161,19 +171,13 @@ function updateFunctionComponent(wipFiber: Fiber) {
   if (instance == null) {
     instance = wipFiber.type as any;
     wipFiber.stateNode = wipFiber.type as Function;
-  } else if (wipFiber.props == instance.props && !wipFiber.partialState) {
+  } else if (wipFiber.props == instance.props) {
     // No need to render, clone children from last time
     cloneChildFibers(wipFiber);
     return;
   }
 
   instance.props = wipFiber.props;
-  instance.state = (<any>Object).assign(
-    {},
-    instance.state,
-    wipFiber.partialState
-  );
-  wipFiber.partialState = null;
 
   const newChildElements = (wipFiber.stateNode as Function)(instance.props);
   reconcileChildrenArray(wipFiber, newChildElements);
@@ -195,6 +199,7 @@ function reconcileChildrenArray(wipFiber: Fiber, newChildElements) {
     const sameType = oldFiber && element && element.type == oldFiber.type;
 
     if (sameType) {
+      delete oldFiber.alternate;
       newFiber = {
         type: oldFiber.type,
         tag: oldFiber.tag,
@@ -251,6 +256,7 @@ function cloneChildFibers(parentFiber: Fiber) {
   let oldChild = oldFiber.child;
   let prevChild = null;
   while (oldChild) {
+    delete oldChild.alternate;
     const newChild: Fiber = {
       type: oldChild.type,
       tag: oldChild.tag,
@@ -286,9 +292,10 @@ function completeWork(fiber: Fiber) {
 }
 
 function commitAllWork(fiber) {
-  fiber.effects.forEach(f => {
+  while (fiber.effects.length > 0) {
+    const f = fiber.effects.shift();
     commitWork(f);
-  });
+  }
   fiber.stateNode._rootContainerFiber = fiber;
   nextUnitOfWork = null;
   pendingCommit = null;
@@ -323,7 +330,10 @@ function commitWork(fiber: Fiber) {
 function commitDeletion(fiber: Fiber, domParent) {
   let node = fiber;
   while (true) {
-    if (node.tag == FiberTags.CLASS_COMPONENT) {
+    if (
+      node.tag == FiberTags.CLASS_COMPONENT ||
+      node.tag == FiberTags.FUNCTION_COMPONENT
+    ) {
       node = node.child;
       continue;
     }
