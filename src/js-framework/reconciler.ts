@@ -199,7 +199,7 @@ function reconcileChildrenArray(wipFiber: Fiber, newChildElements) {
     const sameType = oldFiber && element && element.type == oldFiber.type;
 
     if (sameType) {
-      delete oldFiber.alternate;
+      // delete oldFiber.alternate;
       newFiber = {
         type: oldFiber.type,
         tag: oldFiber.tag,
@@ -256,7 +256,7 @@ function cloneChildFibers(parentFiber: Fiber) {
   let oldChild = oldFiber.child;
   let prevChild = null;
   while (oldChild) {
-    delete oldChild.alternate;
+    // delete oldChild.alternate;
     const newChild: Fiber = {
       type: oldChild.type,
       tag: oldChild.tag,
@@ -320,7 +320,10 @@ function commitWork(fiber: Fiber) {
     fiber.tag == FiberTags.HOST_COMPONENT
   ) {
     (domParent as HTMLElement).appendChild(fiber.stateNode as HTMLElement);
-  } else if (fiber.effectTag == EffectTags.UPDATE) {
+  } else if (
+    fiber.effectTag == EffectTags.UPDATE &&
+    fiber.tag == FiberTags.HOST_COMPONENT
+  ) {
     updateDomProperties(fiber.stateNode, fiber.alternate.props, fiber.props);
   } else if (fiber.effectTag == EffectTags.DELETION) {
     commitDeletion(fiber, domParent);

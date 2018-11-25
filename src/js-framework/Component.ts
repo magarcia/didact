@@ -1,14 +1,14 @@
 import { Fiber } from "./Fiber";
 import { scheduleUpdate } from "./reconciler";
 
-export abstract class Component {
-  props: any;
-  state: any;
+export abstract class Component<Props = any, State = any> {
+  props: Props;
+  state: State;
   __fiber: Fiber;
 
-  constructor(props: any) {
-    this.props = props || {};
-    this.state = this.state || {};
+  constructor(props: Props) {
+    this.props = (props || {}) as Props;
+    this.state = (this.state || {}) as State;
   }
 
   setState(partialState: any) {

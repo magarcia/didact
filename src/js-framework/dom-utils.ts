@@ -10,9 +10,13 @@ export function updateDomProperties(dom, prevProps, nextProps) {
   // Remove event listeners
   Object.keys(prevProps)
     .filter(isEvent)
-    .filter(key => !(key in nextProps) || isNew(prevProps, nextProps)(key))
+    .filter(
+      key =>
+        isGone(prevProps, nextProps)(key) || isNew(prevProps, nextProps)(key)
+    )
     .forEach(name => {
-      const eventType = name.toLowerCase().substring(2);
+      let eventType = name.toLowerCase().substring(2);
+      if (eventType == "doubleclick") eventType = "dblclick";
       dom.removeEventListener(eventType, prevProps[name]);
     });
 
@@ -53,7 +57,8 @@ export function updateDomProperties(dom, prevProps, nextProps) {
     .filter(isEvent)
     .filter(isNew(prevProps, nextProps))
     .forEach(name => {
-      const eventType = name.toLowerCase().substring(2);
+      let eventType = name.toLowerCase().substring(2);
+      if (eventType == "doubleclick") eventType = "dblclick";
       dom.addEventListener(eventType, nextProps[name]);
     });
 }

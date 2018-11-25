@@ -1,9 +1,9 @@
 import { Fiber } from "./Fiber";
-export declare abstract class Component {
-    props: any;
-    state: any;
+export declare abstract class Component<Props = any, State = any> {
+    props: Props;
+    state: State;
     __fiber: Fiber;
-    constructor(props: any);
+    constructor(props: Props);
     setState(partialState: any): void;
     render(): void;
 }
