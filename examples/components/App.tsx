@@ -2,7 +2,6 @@
 
 import Framework, { Component } from "../../src/js-framework";
 import { Story } from "./Story";
-import { Matrix } from "./Matrix";
 
 export class App extends Component {
   render() {
@@ -14,8 +13,6 @@ export class App extends Component {
             return <Story name={story.name} url={story.url} />;
           })}
         </div>
-
-        <Matrix />
       </div>
     );
   }
