@@ -3,6 +3,6 @@ export declare class Column extends Component {
     constructor(props: any);
     setIntervalUpdate(): void;
     setRandomNumber(): void;
-    getColorClass(): string;
+    getColor(): string;
     render(): any;
 }
